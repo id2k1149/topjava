@@ -40,17 +40,6 @@ public class UserMealsUtil {
             }
         }
 
-        Map<LocalDate, Boolean> dayExcess = new HashMap<>();
-        for (Map.Entry<LocalDate, Integer> pair : dayCalories.entrySet()) {
-            LocalDate key = pair.getKey();
-            Integer value = pair.getValue();
-            if (value > caloriesPerDay) {
-                dayExcess.put(key, true);
-            } else {
-                dayExcess.put(key, false);
-            }
-        }
-
         List<UserMealWithExcess> result = new ArrayList<>();
         for (UserMeal eachDayMeal : meals) {
             LocalTime timeOfMeal = eachDayMeal.getDateTime().toLocalTime();
@@ -58,7 +47,7 @@ public class UserMealsUtil {
                 LocalDateTime dateTime = eachDayMeal.getDateTime();
                 String description = eachDayMeal.getDescription();
                 int calories = eachDayMeal.getCalories();
-                boolean excess = dayExcess.get(eachDayMeal.getDateTime().toLocalDate());
+                boolean excess = (dayCalories.get(eachDayMeal.getDateTime().toLocalDate()) > caloriesPerDay);
                 UserMealWithExcess userMealWithExcess = new UserMealWithExcess(dateTime, description, calories, excess);
                 result.add(userMealWithExcess);
             }
