@@ -30,38 +30,38 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // return filtered list with excess. Implement by cycles
-        Map<LocalDate, Integer> dayTotalCalories = new HashMap<>();
+        Map<LocalDate, Integer> dateTotalCaloriesMap = new HashMap<>();
         for (UserMeal eachDayMeal : meals) {
-            if (dayTotalCalories.containsKey(eachDayMeal.getDateTime().toLocalDate())) {
-                Integer sumOfCalories = dayTotalCalories.get(eachDayMeal.getDateTime().toLocalDate());
+            if (dateTotalCaloriesMap.containsKey(eachDayMeal.getDateTime().toLocalDate())) {
+                Integer sumOfCalories = dateTotalCaloriesMap.get(eachDayMeal.getDateTime().toLocalDate());
                 sumOfCalories += eachDayMeal.getCalories();
-                dayTotalCalories.put(eachDayMeal.getDateTime().toLocalDate(), sumOfCalories);
+                dateTotalCaloriesMap.put(eachDayMeal.getDateTime().toLocalDate(), sumOfCalories);
             } else {
-                dayTotalCalories.put(eachDayMeal.getDateTime().toLocalDate(), eachDayMeal.getCalories());
+                dateTotalCaloriesMap.put(eachDayMeal.getDateTime().toLocalDate(), eachDayMeal.getCalories());
             }
         }
 
-        List<UserMealWithExcess> result = new ArrayList<>();
+        List<UserMealWithExcess> userMealWithExcessesList = new ArrayList<>();
         for (UserMeal eachDayMeal : meals) {
             LocalTime timeOfMeal = eachDayMeal.getDateTime().toLocalTime();
             if (timeOfMeal.isAfter(startTime) && timeOfMeal.isBefore(endTime)) {
                 LocalDateTime dateTime = eachDayMeal.getDateTime();
                 String description = eachDayMeal.getDescription();
                 int calories = eachDayMeal.getCalories();
-                boolean excess = (dayTotalCalories.get(eachDayMeal.getDateTime().toLocalDate()) > caloriesPerDay);
+                boolean excess = (dateTotalCaloriesMap.get(eachDayMeal.getDateTime().toLocalDate()) > caloriesPerDay);
                 UserMealWithExcess userMealWithExcess = new UserMealWithExcess(dateTime, description, calories, excess);
-                result.add(userMealWithExcess);
+                userMealWithExcessesList.add(userMealWithExcess);
             }
         }
 
-        return result;
+        return userMealWithExcessesList;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // Implement by streams
-        Map<LocalDate, Integer> dayTotalCalories = meals.stream()
+        Map<LocalDate, Integer> dateTotalCaloriesMap = meals.stream()
                 .collect(Collectors.groupingBy(eachDay -> eachDay.getDateTime().toLocalDate(),
-                         Collectors.summingInt(UserMeal::getCalories)));
+                        Collectors.summingInt(UserMeal::getCalories)));
 
         return meals.stream()
                 .filter(time -> time.getDateTime().toLocalTime().isAfter(startTime)
@@ -69,7 +69,7 @@ public class UserMealsUtil {
                 .map(e -> new UserMealWithExcess(e.getDateTime(),
                         e.getDescription(),
                         e.getCalories(),
-                        dayTotalCalories.get(e.getDateTime().toLocalDate()) > caloriesPerDay))
+                        dateTotalCaloriesMap.get(e.getDateTime().toLocalDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
 }
