@@ -43,8 +43,8 @@ public class UserMealsUtil {
 
         List<UserMealWithExcess> userMealWithExcessesList = new ArrayList<>();
         for (UserMeal eachDayMeal : meals) {
-            LocalTime timeOfMeal = eachDayMeal.getDateTime().toLocalTime();
-            if (timeOfMeal.isAfter(startTime) && timeOfMeal.isBefore(endTime)) {
+            LocalTime localTime = eachDayMeal.getDateTime().toLocalTime();
+            if (TimeUtil.isBetweenHalfOpen(localTime, startTime, endTime)) {
                 LocalDateTime dateTime = eachDayMeal.getDateTime();
                 String description = eachDayMeal.getDescription();
                 int calories = eachDayMeal.getCalories();
@@ -64,8 +64,7 @@ public class UserMealsUtil {
                         Collectors.summingInt(UserMeal::getCalories)));
 
         return meals.stream()
-                .filter(time -> time.getDateTime().toLocalTime().isAfter(startTime)
-                        && time.getDateTime().toLocalTime().isBefore(endTime))
+                .filter(time -> TimeUtil.isBetweenHalfOpen(time.getDateTime().toLocalTime(), startTime, endTime))
                 .map(e -> new UserMealWithExcess(e.getDateTime(),
                         e.getDescription(),
                         e.getCalories(),
