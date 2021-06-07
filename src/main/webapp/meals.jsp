@@ -11,7 +11,7 @@
 <hr>
 <h2>Meals</h2>
 
-<a href="#">Add Meal</a>
+<a href="addMeal.jsp">Add Meal</a>
 
 <br>
 <br>
@@ -19,6 +19,7 @@
 <table border=1>
     <thead>
         <tr>
+            <th>Id</th>
             <th>Date</th>
             <th>Description</th>
             <th>Calories</th>
@@ -31,11 +32,17 @@
         <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
             <tr style="color:${meal.excess ? "red" : "green"}">
+                <td>${meal.id}</td>
                 <td>${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="#">Update</a></td>
-                <td><a href="#">Delete</a></td>
+                <td><a href="meal?id=${meal.id}">Update</a></td>
+                <td>
+                    <form action="deleteMeal.jsp" method="post">
+                    <input type="hidden" name="id" value="${meal.getId()}">
+                    <input type="submit" value="Delete">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
     </tbody>
