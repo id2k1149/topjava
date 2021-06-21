@@ -17,23 +17,23 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal create(int userId, Meal meal) {
-        return repository.save(userId, meal);
+    public Meal create(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 
-    public void delete(int userId, int id) {
-        checkNotFoundWithId(repository.delete(userId, id), id);
+    public void delete(int id, int userId) {
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public Meal get(int userId, int id) {
-        return checkNotFoundWithId(repository.get(userId, id), id);
+    public Meal get(int id, int userId) {
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     public List<Meal> getAll(int userId) {
         return repository.getAll(userId);
     }
 
-    public void update(int userId, Meal meal) {
-        checkNotFoundWithId(repository.save(userId, meal), meal.getId());
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 }
