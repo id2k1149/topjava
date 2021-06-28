@@ -29,6 +29,16 @@ public class InMemoryMealRepository implements MealRepository {
         return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
+    @PostConstruct
+    public void postConstruct() {
+        log.info("+++ PostConstruct");
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        log.info("+++ PreDestroy");
+    }
+
     @Override
     public boolean delete(int id) {
         return repository.remove(id) != null;
