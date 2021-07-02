@@ -60,6 +60,14 @@ Java Enterprise Online Project
 > - добавил `UserMealWithExcess.toString()` и метод для выполнения _Optional домашнего задания_
 > - метод фильтрации в `TimeUtil` переименовали в `isBetweenHalfOpen` (также изменилась логика сравнения - `startTime` включается в интервал) 
 
+#### Начало выполнения [выпускного проекта](https://github.com/JavaOPs/topjava/blob/master/graduation.md)
+
+### 01.07: 5-е занятие
+- Обзор JDK 9/16. Миграция Topjava с 1.8 на 16
+- Разбор вопросов
+- Разбор домашнего задания HW4 + Optional
+- Транзакции
+
 ##  Инструкция по шагам (из видео):</h3>
 -  <a href="http://javaops.ru/view/soft">Установить ПО (git, JDK8, IntelliJ IDEA, Maven)</a>
 -  Создать аккаунт на <a href="https://github.com">GitHub</a>
